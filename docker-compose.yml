@@ -1,0 +1,15 @@
+version: '3.6'
+
+services:
+  grafana:
+    image: grafana/grafana:6.3.5
+    ports:
+      - 3000:3000
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: Aa@123456
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+
