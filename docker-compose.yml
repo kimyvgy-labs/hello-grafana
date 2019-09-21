@@ -1,15 +1,36 @@
 version: '3.6'
 
+volumes:
+  grafana-data:
+  prometheus-data:
+
 services:
   grafana:
     image: grafana/grafana:6.3.5
     ports:
       - 3000:3000
     environment:
-      GF_SECURITY_ADMIN_PASSWORD: Aa@123456
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    volumes:
+      - grafana-data:/var/lib/grafana
 
   prometheus:
     image: prom/prometheus:latest
     ports:
       - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+  cadvisor:
+    image: google/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8008:8080
 
