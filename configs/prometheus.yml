@@ -10,3 +10,9 @@ scrape_configs:
       - targets:
         - cadvisor:8080
 
+  - job_name: prometheus
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - localhost:9090
+
