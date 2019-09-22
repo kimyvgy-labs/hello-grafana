@@ -5,24 +5,15 @@ volumes:
   prometheus-data:
 
 services:
-  grafana:
-    image: grafana/grafana:6.3.5
-    ports:
-      - 3000:3000
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: secret
-    volumes:
-      - grafana-data:/var/lib/grafana
-
   prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - 9090:9090
+    image: prom/prometheus:v2.12.0
     command:
       - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
     volumes:
-      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
 
   cadvisor:
     image: google/cadvisor:latest
@@ -34,3 +25,11 @@ services:
     ports:
       - 8008:8080
 
+  grafana:
+    image: grafana/grafana:6.3.5
+    ports:
+      - 3000:3000
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    volumes:
+      - grafana-data:/var/lib/grafana
